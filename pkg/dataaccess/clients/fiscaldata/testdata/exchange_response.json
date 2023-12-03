@@ -1,0 +1,91 @@
+{
+    "data": [
+        {
+            "record_date": "2001-03-31",
+            "country": "Malawi",
+            "currency": "Kwacha",
+            "country_currency_desc": "Malawi-Kwacha",
+            "exchange_rate": "79.75",
+            "effective_date": "2001-03-31",
+            "src_line_nbr": "102",
+            "record_fiscal_year": "2001",
+            "record_fiscal_quarter": "2",
+            "record_calendar_year": "2001",
+            "record_calendar_quarter": "1",
+            "record_calendar_month": "03",
+            "record_calendar_day": "31"
+        },
+        {
+            "record_date": "2001-03-31",
+            "country": "Malaysia",
+            "currency": "Ringgit",
+            "country_currency_desc": "Malaysia-Ringgit",
+            "exchange_rate": "3.8",
+            "effective_date": "2001-03-31",
+            "src_line_nbr": "103",
+            "record_fiscal_year": "2001",
+            "record_fiscal_quarter": "2",
+            "record_calendar_year": "2001",
+            "record_calendar_quarter": "1",
+            "record_calendar_month": "03",
+            "record_calendar_day": "31"
+        }
+    ],
+    "meta": {
+        "count": 100,
+        "labels": {
+            "record_date": "Record Date",
+            "country": "Country",
+            "currency": "Currency",
+            "country_currency_desc": "Country - Currency Description",
+            "exchange_rate": "Exchange Rate",
+            "effective_date": "Effective Date",
+            "src_line_nbr": "Source Line Number",
+            "record_fiscal_year": "Fiscal Year",
+            "record_fiscal_quarter": "Fiscal Quarter Number",
+            "record_calendar_year": "Calendar Year",
+            "record_calendar_quarter": "Calendar Quarter Number",
+            "record_calendar_month": "Calendar Month Number",
+            "record_calendar_day": "Calendar Day Number"
+        },
+        "dataTypes": {
+            "record_date": "DATE",
+            "country": "STRING",
+            "currency": "STRING",
+            "country_currency_desc": "STRING",
+            "exchange_rate": "NUMBER",
+            "effective_date": "DATE",
+            "src_line_nbr": "INTEGER",
+            "record_fiscal_year": "YEAR",
+            "record_fiscal_quarter": "QUARTER",
+            "record_calendar_year": "YEAR",
+            "record_calendar_quarter": "QUARTER",
+            "record_calendar_month": "MONTH",
+            "record_calendar_day": "DAY"
+        },
+        "dataFormats": {
+            "record_date": "YYYY-MM-DD",
+            "country": "String",
+            "currency": "String",
+            "country_currency_desc": "String",
+            "exchange_rate": "10.2",
+            "effective_date": "YYYY-MM-DD",
+            "src_line_nbr": "10",
+            "record_fiscal_year": "YYYY",
+            "record_fiscal_quarter": "Q",
+            "record_calendar_year": "YYYY",
+            "record_calendar_quarter": "Q",
+            "record_calendar_month": "MM",
+            "record_calendar_day": "DD"
+        },
+        "total-count": 17019,
+        "total-pages": 171
+    },
+    "links": {
+        "self": "&page%5Bnumber%5D=1&page%5Bsize%5D=100",
+        "first": "&page%5Bnumber%5D=1&page%5Bsize%5D=100",
+        "prev": null,
+        "next": "&page%5Bnumber%5D=2&page%5Bsize%5D=100",
+        "last": "&page%5Bnumber%5D=171&page%5Bsize%5D=100"
+    }
+}
