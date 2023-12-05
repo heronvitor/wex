@@ -22,3 +22,11 @@ docker:
 .PHONY: db
 db:
 	@psql $(DB_URL)
+
+.PHONY: get-swag
+get-swag:
+	@go install github.com/swaggo/swag/cmd/swag@v1.16.2
+
+.PHONY: doc
+doc:
+	@swag init -d ./cmd/wex,./pkg/presentation/rest

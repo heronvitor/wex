@@ -2,7 +2,9 @@ package fiscaldata
 
 type ExchangeRatesResponse struct {
 	ExchangeRates []ExchangeRate `json:"data"`
-	TotalPages    int            `json:"total_pages"`
+	Meta          struct {
+		TotalPages int `json:"total-pages"`
+	} `json:"meta"`
 }
 
 type ExchangeRate struct {

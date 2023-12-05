@@ -1,6 +1,7 @@
 package business
 
 import (
+	"log"
 	"strconv"
 	"time"
 
@@ -17,7 +18,7 @@ type ExchangeRateRepository interface {
 }
 
 type ExchangeRatesClient interface {
-	GetAllExchangeRates() (exchangeRates fiscaldata.ExchangeRatesResponse, err error)
+	GetAllExchangeRates() (exchangeRates []fiscaldata.ExchangeRate, err error)
 }
 
 type ExchangeRatesService struct {
@@ -26,7 +27,6 @@ type ExchangeRatesService struct {
 }
 
 type UpdateOptions struct {
-	UpdateSince             *time.Time
 	Interval, RetryInterval time.Duration
 	Now                     time.Time
 }
@@ -34,13 +34,24 @@ type UpdateOptions struct {
 func (ef ExchangeRatesService) Update(options UpdateOptions) (err error) {
 	lastUpdateAttempt, err := ef.ExchangeRateRepository.GetLastUpdateAttempt()
 	if err != nil {
+		log.Printf("get latest update error: %s", err.Error())
 		return
 	}
 
 	var updateInfo entities.ExchangeRateUpdateInfo
 
-	if lastUpdateAttempt != nil && !lastUpdateAttempt.Success {
+	if lastUpdateAttempt == nil {
+		updateInfo = entities.ExchangeRateUpdateInfo{
+			Time: options.Now,
+		}
+	} else if lastUpdateAttempt.Success {
+		if options.Now.Sub(lastUpdateAttempt.Time) < options.Interval {
+			log.Println("skiping update due to a recent update")
+			return
+		}
+	} else {
 		if options.Now.Sub(lastUpdateAttempt.RetryTime) < options.RetryInterval {
+			log.Println("skiping update due to a recent attempt")
 			return
 		}
 
@@ -48,15 +59,15 @@ func (ef ExchangeRatesService) Update(options UpdateOptions) (err error) {
 		updateInfo.RetryTime = options.Now
 		updateInfo.RetryCount += 1
 
-	} else {
-		updateInfo = entities.ExchangeRateUpdateInfo{
-			Time: options.Now,
-		}
 	}
-
 	exchangeRatesResp, err := ef.ExchangeRatesClient.GetAllExchangeRates()
+
 	if err != nil {
-		err = ef.ExchangeRateRepository.SaveExchangeRates(nil, updateInfo)
+		log.Printf("get exchange rates error: %s", err.Error())
+
+		if err := ef.ExchangeRateRepository.SaveExchangeRates(nil, updateInfo); err != nil {
+			log.Printf("update failed attempt error: %s", err.Error())
+		}
 		return
 	}
 
@@ -64,15 +75,18 @@ func (ef ExchangeRatesService) Update(options UpdateOptions) (err error) {
 	updateInfo.Success = true
 
 	err = ef.ExchangeRateRepository.SaveExchangeRates(exchangeRates, updateInfo)
+	if err != nil {
+		log.Printf("save exchange rates error: %s", err.Error())
+	}
 	return
 }
 
-func convertRates(exchangeRatesRes fiscaldata.ExchangeRatesResponse) ([]entities.ExchangeRate, error) {
-	converted := make([]entities.ExchangeRate, len(exchangeRatesRes.ExchangeRates))
+func convertRates(exchangeRates []fiscaldata.ExchangeRate) ([]entities.ExchangeRate, error) {
+	converted := make([]entities.ExchangeRate, len(exchangeRates))
 
-	rates := exchangeRatesRes.ExchangeRates
+	rates := exchangeRates
 
-	for i := range exchangeRatesRes.ExchangeRates {
+	for i := range exchangeRates {
 		recordDate, err := time.Parse(time.DateOnly, rates[i].RecordDate)
 		if err != nil {
 			return nil, err
@@ -98,5 +112,5 @@ func convertRates(exchangeRatesRes fiscaldata.ExchangeRatesResponse) ([]entities
 			},
 		)
 	}
-	return nil, nil
+	return converted, nil
 }

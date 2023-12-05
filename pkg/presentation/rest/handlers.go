@@ -1,6 +1,7 @@
 package rest
 
 import (
+	"log"
 	"net/http"
 	"time"
 
@@ -22,9 +23,9 @@ type PurchaseHandler struct {
 // @Produce      json
 // @Param        params  body  schemas.CreatePurchaseInput  true  "purchase"
 // @Success      200  {object}  schemas.CreatePurchaseOutput
-// @Failure      400  {object}  Error
-// @Failure      500  {object}  Error
-// @Router       /accounts [post]
+// @Failure      400  {object}  schemas.Error
+// @Failure      500  {object}  schemas.Error
+// @Router       /api/v1/purchase [post]
 func (h *PurchaseHandler) CreatePurchase(c *gin.Context) {
 	input := schemas.CreatePurchaseInput{}
 
@@ -55,11 +56,12 @@ func (h *PurchaseHandler) CreatePurchase(c *gin.Context) {
 }
 
 // @Produce      json
-// @Param        purchase-id  path  int  true  "purchaseId"
-// @Success      200  {object}  GetPurchaseOutput
-// @Failure      404  {object}  Error
-// @Failure      500  {object}  Error
-// @Router       /purchases/{purchase-id} [get]
+// @Param        id  query  string  true  "id"
+// @Param        currency  query  string  true  "currency"
+// @Success      200  {object}  schemas.GetPurchaseOutput
+// @Failure      404  {object}  schemas.Error
+// @Failure      500  {object}  schemas.Error
+// @Router       /api/v1/purchase [get]
 func (h *PurchaseHandler) GetPurchase(c *gin.Context) {
 	input := schemas.GetPurchaseInput{}
 
@@ -74,6 +76,8 @@ func (h *PurchaseHandler) GetPurchase(c *gin.Context) {
 			c.JSON(http.StatusInternalServerError, schemas.Error{Error: err.Error()})
 			return
 		}
+		log.Printf("get purchase error: %s", err)
+
 		c.JSON(http.StatusInternalServerError, schemas.Error{Error: "internal error"})
 		return
 	}

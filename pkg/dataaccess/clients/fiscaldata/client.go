@@ -3,6 +3,7 @@ package fiscaldata
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -14,9 +15,10 @@ type Client struct {
 }
 
 func (c *Client) GetAllExchangeRates() (exchangeRates []ExchangeRate, err error) {
-	pageSize := 1000
+	pageSize := 500
 	pageNumber := 1
 	var res ExchangeRatesResponse
+	log.Print("getting rates")
 
 	for {
 		res, err = c.GetExchangeRates(pageSize, pageNumber)
@@ -25,11 +27,11 @@ func (c *Client) GetAllExchangeRates() (exchangeRates []ExchangeRate, err error)
 		}
 		exchangeRates = append(exchangeRates, res.ExchangeRates...)
 
-		if pageNumber == res.TotalPages {
+		if pageNumber >= res.Meta.TotalPages {
 			return
 		}
 		pageNumber++
-
+		log.Printf("got page %d of %d", pageNumber, res.Meta.TotalPages)
 	}
 }
 

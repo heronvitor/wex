@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+	"fmt"
 	"time"
 
 	"github.com/heronvitor/pkg/entities"
@@ -34,11 +35,20 @@ func (r ExangeRateRepository) SaveExchangeRates(exchangeRates []entities.Exchang
 			exchangeRate.EffectiveDate,
 		)
 		if err != nil {
+			fmt.Println(&exchangeRate)
 			return err
 		}
+
 	}
 
-	query = "INSERT INTO exchange_rate_update_info (time,retry_count,retry_time,success) VALUES ($1,$2,$3,$4)"
+	query = `
+		INSERT INTO exchange_rate_update_info (time,retry_count,retry_time,success) 
+			VALUES ($1,$2,$3,$4)
+		ON CONFLICT(time) DO UPDATE SET
+			retry_count=EXCLUDED.retry_count,
+			retry_time=EXCLUDED.retry_time,
+			success=EXCLUDED.success
+	`
 	_, err = r.DB.Exec(query, updateInfo.Time, updateInfo.RetryCount, updateInfo.RetryTime, updateInfo.Success)
 	return err
 }
