@@ -6,7 +6,7 @@ type ExchangeRate struct {
 	RecordDate    string
 	Country       string
 	Currency      string
-	ExchangeRate  int
+	ExchangeRate  float64
 	EffectiveDate string
 }
 

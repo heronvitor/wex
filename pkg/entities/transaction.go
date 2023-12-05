@@ -5,17 +5,17 @@ import (
 )
 
 type Purchase struct {
-	UUID            string
+	ID              string
 	Description     string
-	Amount          int
+	Amount          float64
 	TransactionDate time.Time
 }
 
 type PurchaseInCurrency struct {
-	UUID            string
+	ID              string
 	Description     string
-	Amount          int
+	Amount          float64
 	TransactionDate time.Time
-	CurrencyRate    int
-	ConvertedAmount int
+	CurrencyRate    float64
+	ConvertedAmount float64
 }

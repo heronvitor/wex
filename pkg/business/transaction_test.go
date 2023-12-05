@@ -27,7 +27,7 @@ func TestTransactionService_SavePurchase(t *testing.T) {
 		}
 
 		transactionRepository.On("SavePurchase", mock.Anything).
-			Return(entities.Purchase{}, errors.New("save error"))
+			Return(errors.New("save error"))
 
 		_, gotErr := service.SavePurchase(entities.Purchase{
 			Description:     "description",
@@ -42,7 +42,7 @@ func TestTransactionService_SavePurchase(t *testing.T) {
 	t.Run("should set id and call save", func(t *testing.T) {
 		transactionRepository := &mocks.TransactionRepository{}
 		wantPurchase := entities.Purchase{
-			UUID:            "da7cd6e6-1362-4761-af8a-b829b3ea7d60",
+			ID:              "da7cd6e6-1362-4761-af8a-b829b3ea7d60",
 			Description:     "description",
 			Amount:          10,
 			TransactionDate: time.Date(2020, 5, 4, 1, 0, 0, 0, time.UTC),
@@ -53,7 +53,7 @@ func TestTransactionService_SavePurchase(t *testing.T) {
 		}
 
 		transactionRepository.On("SavePurchase", wantPurchase).
-			Return(wantPurchase, (error)(nil))
+			Return(nil)
 
 		gotPurchase, gotErr := service.SavePurchase(entities.Purchase{
 			Description:     "description",
@@ -170,7 +170,7 @@ func TestTransactionService_GetPurchaseInCurrency(t *testing.T) {
 		}
 
 		wantPurchase := &entities.PurchaseInCurrency{
-			UUID:            "da7cd6e6-1362-4761-af8a-b829b3ea7d60",
+			ID:              "da7cd6e6-1362-4761-af8a-b829b3ea7d60",
 			Description:     "description",
 			Amount:          10,
 			ConvertedAmount: 530,
@@ -181,7 +181,7 @@ func TestTransactionService_GetPurchaseInCurrency(t *testing.T) {
 		transactionRepository.On("GetPurchaseByID", id).
 			Return(
 				&entities.Purchase{
-					UUID:            id,
+					ID:              id,
 					Description:     "description",
 					Amount:          10,
 					TransactionDate: time.Date(2020, 5, 4, 1, 0, 0, 0, time.UTC),
