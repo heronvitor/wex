@@ -1,0 +1,100 @@
+definitions:
+  schemas.CreatePurchaseInput:
+    properties:
+      amount:
+        type: number
+      description:
+        type: string
+      transaction_date:
+        type: string
+    required:
+    - amount
+    - description
+    - transaction_date
+    type: object
+  schemas.CreatePurchaseOutput:
+    properties:
+      amount:
+        type: number
+      description:
+        type: string
+      id:
+        type: string
+      transaction_date:
+        type: string
+    type: object
+  schemas.Error:
+    properties:
+      error:
+        type: string
+    type: object
+  schemas.GetPurchaseOutput:
+    properties:
+      amount:
+        type: number
+      converted_amount:
+        type: number
+      currency_rate:
+        type: number
+      description:
+        type: string
+      id:
+        type: string
+      transaction_date:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /api/v1/purchase:
+    get:
+      parameters:
+      - description: id
+        in: query
+        name: id
+        required: true
+        type: string
+      - description: currency
+        in: query
+        name: currency
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schemas.GetPurchaseOutput'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/schemas.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/schemas.Error'
+    post:
+      parameters:
+      - description: purchase
+        in: body
+        name: params
+        required: true
+        schema:
+          $ref: '#/definitions/schemas.CreatePurchaseInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schemas.CreatePurchaseOutput'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/schemas.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/schemas.Error'
+swagger: "2.0"
