@@ -77,8 +77,8 @@ func update(config config) (err error) {
 
 	exchangeRatesService.Update(business.UpdateOptions{
 		Now:           time.Now(),
-		RetryInterval: time.Hour,
-		Interval:      24 * time.Hour,
+		RetryInterval: config.Update.RetryInterval,
+		Interval:      config.Update.UpdateInterval,
 	})
 	return
 }

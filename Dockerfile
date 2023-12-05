@@ -18,4 +18,4 @@ COPY --from=builder /app/bin/wex .
 
 EXPOSE 8080
 
-ENTRYPOINT /app/wex
+ENTRYPOINT /app/wex 
