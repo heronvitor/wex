@@ -41,8 +41,8 @@ func runApi(config config) {
 
 	app := &rest.API{
 		AccountHandler: rest.PurchaseHandler{
-			PurchaseService: business.TransactionService{
-				TransactionRepository: repository.PurchaseRepository{
+			PurchaseService: business.PurchaseService{
+				PurchaseRepository: repository.PurchaseRepository{
 					DB: db,
 				},
 				ExchangeRateRepository: repository.ExangeRateRepository{

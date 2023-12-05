@@ -13,22 +13,24 @@ type ExchangeRatesClient struct {
 }
 
 // GetAllExchangeRates provides a mock function with given fields:
-func (_m *ExchangeRatesClient) GetAllExchangeRates() (fiscaldata.ExchangeRatesResponse, error) {
+func (_m *ExchangeRatesClient) GetAllExchangeRates() ([]fiscaldata.ExchangeRate, error) {
 	ret := _m.Called()
 
 	if len(ret) == 0 {
 		panic("no return value specified for GetAllExchangeRates")
 	}
 
-	var r0 fiscaldata.ExchangeRatesResponse
+	var r0 []fiscaldata.ExchangeRate
 	var r1 error
-	if rf, ok := ret.Get(0).(func() (fiscaldata.ExchangeRatesResponse, error)); ok {
+	if rf, ok := ret.Get(0).(func() ([]fiscaldata.ExchangeRate, error)); ok {
 		return rf()
 	}
-	if rf, ok := ret.Get(0).(func() fiscaldata.ExchangeRatesResponse); ok {
+	if rf, ok := ret.Get(0).(func() []fiscaldata.ExchangeRate); ok {
 		r0 = rf()
 	} else {
-		r0 = ret.Get(0).(fiscaldata.ExchangeRatesResponse)
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]fiscaldata.ExchangeRate)
+		}
 	}
 
 	if rf, ok := ret.Get(1).(func() error); ok {

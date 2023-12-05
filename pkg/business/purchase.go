@@ -13,20 +13,20 @@ var (
 	newUuid                = uuid.NewString
 )
 
-type TransactionRepository interface {
+type PurchaseRepository interface {
 	GetPurchaseByID(id string) (*entities.Purchase, error)
 	SavePurchase(entities.Purchase) error
 }
 
-type TransactionService struct {
-	TransactionRepository  TransactionRepository
+type PurchaseService struct {
+	PurchaseRepository     PurchaseRepository
 	ExchangeRateRepository ExchangeRateRepository
 }
 
-func (s TransactionService) CreatePurchase(purchase entities.Purchase) (entities.Purchase, error) {
+func (s PurchaseService) CreatePurchase(purchase entities.Purchase) (entities.Purchase, error) {
 	purchase.ID = newUuid()
 
-	err := s.TransactionRepository.SavePurchase(purchase)
+	err := s.PurchaseRepository.SavePurchase(purchase)
 	if err != nil {
 		return entities.Purchase{}, err
 	}
@@ -34,8 +34,8 @@ func (s TransactionService) CreatePurchase(purchase entities.Purchase) (entities
 	return purchase, err
 }
 
-func (s TransactionService) GetPurchaseInCurrency(id string, currency string) (*entities.PurchaseInCurrency, error) {
-	purchase, err := s.TransactionRepository.GetPurchaseByID(id)
+func (s PurchaseService) GetPurchaseInCurrency(id string, currency string) (*entities.PurchaseInCurrency, error) {
+	purchase, err := s.PurchaseRepository.GetPurchaseByID(id)
 	if err != nil {
 		return nil, err
 	}

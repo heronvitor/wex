@@ -13,17 +13,17 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-func TestTransactionService_SavePurchase(t *testing.T) {
+func TestPurchaseService_SavePurchase(t *testing.T) {
 	newUuid = func() string { return "da7cd6e6-1362-4761-af8a-b829b3ea7d60" }
 	defer func() {
 		newUuid = uuid.NewString
 	}()
 
 	t.Run("should set id and call save", func(t *testing.T) {
-		transactionRepository := &mocks.TransactionRepository{}
+		transactionRepository := &mocks.PurchaseRepository{}
 
-		service := TransactionService{
-			TransactionRepository: transactionRepository,
+		service := PurchaseService{
+			PurchaseRepository: transactionRepository,
 		}
 
 		transactionRepository.On("SavePurchase", mock.Anything).
@@ -40,7 +40,7 @@ func TestTransactionService_SavePurchase(t *testing.T) {
 	})
 
 	t.Run("should set id and call save", func(t *testing.T) {
-		transactionRepository := &mocks.TransactionRepository{}
+		transactionRepository := &mocks.PurchaseRepository{}
 		wantPurchase := entities.Purchase{
 			ID:              "da7cd6e6-1362-4761-af8a-b829b3ea7d60",
 			Description:     "description",
@@ -48,8 +48,8 @@ func TestTransactionService_SavePurchase(t *testing.T) {
 			TransactionDate: time.Date(2020, 5, 4, 1, 0, 0, 0, time.UTC),
 		}
 
-		service := TransactionService{
-			TransactionRepository: transactionRepository,
+		service := PurchaseService{
+			PurchaseRepository: transactionRepository,
 		}
 
 		transactionRepository.On("SavePurchase", wantPurchase).
@@ -67,14 +67,14 @@ func TestTransactionService_SavePurchase(t *testing.T) {
 	})
 }
 
-func TestTransactionService_GetPurchaseInCurrency(t *testing.T) {
+func TestPurchaseService_GetPurchaseInCurrency(t *testing.T) {
 	id := "da7cd6e6-1362-4761-af8a-b829b3ea7d60"
 
 	t.Run("should pass error", func(t *testing.T) {
-		transactionRepository := &mocks.TransactionRepository{}
+		transactionRepository := &mocks.PurchaseRepository{}
 
-		service := TransactionService{
-			TransactionRepository: transactionRepository,
+		service := PurchaseService{
+			PurchaseRepository: transactionRepository,
 		}
 
 		transactionRepository.On("GetPurchaseByID", id).
@@ -90,10 +90,10 @@ func TestTransactionService_GetPurchaseInCurrency(t *testing.T) {
 	})
 
 	t.Run("should return not found error", func(t *testing.T) {
-		transactionRepository := &mocks.TransactionRepository{}
+		transactionRepository := &mocks.PurchaseRepository{}
 
-		service := TransactionService{
-			TransactionRepository: transactionRepository,
+		service := PurchaseService{
+			PurchaseRepository: transactionRepository,
 		}
 
 		transactionRepository.On("GetPurchaseByID", id).
@@ -107,11 +107,11 @@ func TestTransactionService_GetPurchaseInCurrency(t *testing.T) {
 	})
 
 	t.Run("should return get exchange error", func(t *testing.T) {
-		transactionRepository := &mocks.TransactionRepository{}
+		transactionRepository := &mocks.PurchaseRepository{}
 		exchangeRateRepository := &mocks.ExchangeRateRepository{}
 
-		service := TransactionService{
-			TransactionRepository:  transactionRepository,
+		service := PurchaseService{
+			PurchaseRepository:     transactionRepository,
 			ExchangeRateRepository: exchangeRateRepository,
 		}
 
@@ -134,11 +134,11 @@ func TestTransactionService_GetPurchaseInCurrency(t *testing.T) {
 	})
 
 	t.Run("should return cant convert error", func(t *testing.T) {
-		transactionRepository := &mocks.TransactionRepository{}
+		transactionRepository := &mocks.PurchaseRepository{}
 		exchangeRateRepository := &mocks.ExchangeRateRepository{}
 
-		service := TransactionService{
-			TransactionRepository:  transactionRepository,
+		service := PurchaseService{
+			PurchaseRepository:     transactionRepository,
 			ExchangeRateRepository: exchangeRateRepository,
 		}
 
@@ -161,11 +161,11 @@ func TestTransactionService_GetPurchaseInCurrency(t *testing.T) {
 	})
 
 	t.Run("should set id and call save", func(t *testing.T) {
-		transactionRepository := &mocks.TransactionRepository{}
+		transactionRepository := &mocks.PurchaseRepository{}
 		exchangeRateRepository := &mocks.ExchangeRateRepository{}
 
-		service := TransactionService{
-			TransactionRepository:  transactionRepository,
+		service := PurchaseService{
+			PurchaseRepository:     transactionRepository,
 			ExchangeRateRepository: exchangeRateRepository,
 		}
 
