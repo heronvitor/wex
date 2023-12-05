@@ -2,19 +2,17 @@ package entities
 
 import (
 	"time"
-
-	"github.com/google/uuid"
 )
 
 type Purchase struct {
-	UUID            uuid.UUID
+	UUID            string
 	Description     string
 	Amount          int
 	TransactionDate time.Time
 }
 
 type PurchaseInCurrency struct {
-	UUID            uuid.UUID
+	UUID            string
 	Description     string
 	Amount          int
 	TransactionDate time.Time

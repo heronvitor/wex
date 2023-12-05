@@ -11,8 +11,8 @@ type ExchangeRate struct {
 }
 
 type ExchangeRateUpdateInfo struct {
-	LastAtemptDate time.Time
-	RetryCount     int
-	RetryDate      int
-	Success        bool
+	Time       time.Time
+	RetryCount int
+	RetryTime  time.Time
+	Success    bool
 }

@@ -16,20 +16,12 @@ var exchange_response string
 
 func TestClient_GetExchangeRates(t *testing.T) {
 	t.Run("should send url params response", func(t *testing.T) {
-		options := ExchangeRatesOptions{
-			Fields:     []string{"country", "exchange_rate"},
-			PageSize:   10,
-			PageNumber: 4,
-			SortFields: []string{"effective_date"},
-		}
-
 		wantPath := "/services/api/fiscal_service/v1/accounting/od/rates_of_exchange"
 		wantQuery := url.Values{
-			"fields":       []string{"country,exchange_rate"},
+			"fields":       []string{"record_date,country,currency,exchange_rate,effective_date"},
 			"format":       []string{"json"},
 			"page[number]": []string{"4"},
 			"page[size]":   []string{"10"},
-			"sort":         []string{"effective_date"},
 		}
 
 		var gotPath string
@@ -44,15 +36,13 @@ func TestClient_GetExchangeRates(t *testing.T) {
 		defer server.Close()
 
 		client := &Client{Client: http.DefaultClient, URL: server.URL}
-		client.GetExchangeRates(options)
+		client.GetExchangeRates(10, 4)
 
 		assert.Equal(t, wantPath, gotPath)
 		assert.Equal(t, wantQuery, gotQuery)
 	})
 
 	t.Run("should parse response", func(t *testing.T) {
-		options := ExchangeRatesOptions{}
-
 		wantExchangeRates := ExchangeRatesResponse{
 			ExchangeRates: []ExchangeRate{
 				{
@@ -79,7 +69,7 @@ func TestClient_GetExchangeRates(t *testing.T) {
 		defer server.Close()
 
 		client := &Client{Client: http.DefaultClient, URL: server.URL}
-		gotExchangeRates, gotErr := client.GetExchangeRates(options)
+		gotExchangeRates, gotErr := client.GetExchangeRates(0, 0)
 
 		assert.Equal(t, wantExchangeRates, gotExchangeRates)
 		assert.NoError(t, gotErr)
