@@ -23,7 +23,7 @@ type TransactionService struct {
 	ExchangeRateRepository ExchangeRateRepository
 }
 
-func (s TransactionService) SavePurchase(purchase entities.Purchase) (entities.Purchase, error) {
+func (s TransactionService) CreatePurchase(purchase entities.Purchase) (entities.Purchase, error) {
 	purchase.ID = newUuid()
 
 	err := s.TransactionRepository.SavePurchase(purchase)

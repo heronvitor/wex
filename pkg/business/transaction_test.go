@@ -29,7 +29,7 @@ func TestTransactionService_SavePurchase(t *testing.T) {
 		transactionRepository.On("SavePurchase", mock.Anything).
 			Return(errors.New("save error"))
 
-		_, gotErr := service.SavePurchase(entities.Purchase{
+		_, gotErr := service.CreatePurchase(entities.Purchase{
 			Description:     "description",
 			Amount:          10,
 			TransactionDate: time.Date(2020, 5, 4, 1, 0, 0, 0, time.UTC),
@@ -55,7 +55,7 @@ func TestTransactionService_SavePurchase(t *testing.T) {
 		transactionRepository.On("SavePurchase", wantPurchase).
 			Return(nil)
 
-		gotPurchase, gotErr := service.SavePurchase(entities.Purchase{
+		gotPurchase, gotErr := service.CreatePurchase(entities.Purchase{
 			Description:     "description",
 			Amount:          10,
 			TransactionDate: time.Date(2020, 5, 4, 1, 0, 0, 0, time.UTC),
