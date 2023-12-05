@@ -13,9 +13,11 @@ type PurchaseRepository struct {
 
 func (r PurchaseRepository) GetPurchaseByID(id string) (*entities.Purchase, error) {
 	purchase := &entities.Purchase{}
-	row := r.DB.QueryRow("SELECT id, description, amount, transaction_date FROM purchase WHERE id = $1", id)
 
-	if err := row.Scan(&purchase.ID, &purchase.Description, &purchase.Amount, &purchase.TransactionDate); err != nil {
+	err := r.DB.QueryRow("SELECT id, description, amount, transaction_date FROM purchase WHERE id = $1", id).
+		Scan(&purchase.ID, &purchase.Description, &purchase.Amount, &purchase.TransactionDate)
+
+	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, nil
 		}

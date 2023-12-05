@@ -3,11 +3,11 @@ package entities
 import "time"
 
 type ExchangeRate struct {
-	RecordDate    string
+	RecordDate    time.Time
 	Country       string
 	Currency      string
 	ExchangeRate  float64
-	EffectiveDate string
+	EffectiveDate time.Time
 }
 
 type ExchangeRateUpdateInfo struct {
