@@ -34,7 +34,7 @@ func (s PurchaseService) CreatePurchase(purchase entities.Purchase) (entities.Pu
 	return purchase, err
 }
 
-func (s PurchaseService) GetPurchaseInCurrency(id string, currency string) (*entities.PurchaseInCurrency, error) {
+func (s PurchaseService) GetPurchaseInCurrency(id, country, currency string) (*entities.PurchaseInCurrency, error) {
 	purchase, err := s.PurchaseRepository.GetPurchaseByID(id)
 	if err != nil {
 		return nil, err
@@ -44,7 +44,7 @@ func (s PurchaseService) GetPurchaseInCurrency(id string, currency string) (*ent
 		return nil, ErrPurchaseNotFound
 	}
 
-	exchangeRate, err := s.ExchangeRateRepository.GetCurrencyRateUntil(currency, purchase.TransactionDate)
+	exchangeRate, err := s.ExchangeRateRepository.GetCurrencyRateUntil(country, currency, purchase.TransactionDate)
 	if err != nil {
 		return nil, err
 	}

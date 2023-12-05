@@ -16,8 +16,7 @@ func (r ExangeRateRepository) SaveExchangeRates(exchangeRates []entities.Exchang
 	query := `
 		INSERT INTO exchange_rate (record_date, country, currency, exchange_rate, effective_date)
 			VALUES ($1,$2,$3,$4,$5)
-		ON CONFLICT(currency, record_date) DO UPDATE SET
-			country=EXCLUDED.country,
+		ON CONFLICT(country, currency, record_date) DO UPDATE SET
 			exchange_rate=EXCLUDED.exchange_rate,
 			effective_date=EXCLUDED.effective_date
 			`
@@ -80,15 +79,15 @@ func (r ExangeRateRepository) GetLastUpdateAttempt() (lastUpdateAttempt *entitie
 	return lastUpdateAttempt, nil
 }
 
-func (r ExangeRateRepository) GetCurrencyRateUntil(currency string, until time.Time) (*entities.ExchangeRate, error) {
+func (r ExangeRateRepository) GetCurrencyRateUntil(country, currency string, until time.Time) (*entities.ExchangeRate, error) {
 	exchangeRate := &entities.ExchangeRate{}
 	query := `
 		SELECT record_date, country, currency, exchange_rate, effective_date 
 			FROM exchange_rate 
-			WHERE currency=$1 and record_date<=$2
+			WHERE country=$1 and currency=$2 and record_date<=$3
 			ORDER BY record_date DESC
 	`
-	row := r.DB.QueryRow(query, currency, until)
+	row := r.DB.QueryRow(query, country, currency, until)
 
 	err := row.Scan(
 		&exchangeRate.RecordDate,

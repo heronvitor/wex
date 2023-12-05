@@ -40,9 +40,9 @@ func (_m *PurchaseService) CreatePurchase(purchase entities.Purchase) (entities.
 	return r0, r1
 }
 
-// GetPurchaseInCurrency provides a mock function with given fields: id, currency
-func (_m *PurchaseService) GetPurchaseInCurrency(id string, currency string) (*entities.PurchaseInCurrency, error) {
-	ret := _m.Called(id, currency)
+// GetPurchaseInCurrency provides a mock function with given fields: id, country, currency
+func (_m *PurchaseService) GetPurchaseInCurrency(id string, country string, currency string) (*entities.PurchaseInCurrency, error) {
+	ret := _m.Called(id, country, currency)
 
 	if len(ret) == 0 {
 		panic("no return value specified for GetPurchaseInCurrency")
@@ -50,19 +50,19 @@ func (_m *PurchaseService) GetPurchaseInCurrency(id string, currency string) (*e
 
 	var r0 *entities.PurchaseInCurrency
 	var r1 error
-	if rf, ok := ret.Get(0).(func(string, string) (*entities.PurchaseInCurrency, error)); ok {
-		return rf(id, currency)
+	if rf, ok := ret.Get(0).(func(string, string, string) (*entities.PurchaseInCurrency, error)); ok {
+		return rf(id, country, currency)
 	}
-	if rf, ok := ret.Get(0).(func(string, string) *entities.PurchaseInCurrency); ok {
-		r0 = rf(id, currency)
+	if rf, ok := ret.Get(0).(func(string, string, string) *entities.PurchaseInCurrency); ok {
+		r0 = rf(id, country, currency)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*entities.PurchaseInCurrency)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(string, string) error); ok {
-		r1 = rf(id, currency)
+	if rf, ok := ret.Get(1).(func(string, string, string) error); ok {
+		r1 = rf(id, country, currency)
 	} else {
 		r1 = ret.Error(1)
 	}

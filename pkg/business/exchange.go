@@ -14,7 +14,7 @@ const MaxUpdateRetries = 5
 type ExchangeRateRepository interface {
 	SaveExchangeRates([]entities.ExchangeRate, entities.ExchangeRateUpdateInfo) error
 	GetLastUpdateAttempt() (lastUpdateAttempt *entities.ExchangeRateUpdateInfo, err error)
-	GetCurrencyRateUntil(currency string, until time.Time) (*entities.ExchangeRate, error)
+	GetCurrencyRateUntil(country, currency string, until time.Time) (*entities.ExchangeRate, error)
 }
 
 type ExchangeRatesClient interface {

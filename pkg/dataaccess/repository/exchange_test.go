@@ -24,6 +24,8 @@ func TestExangeRateRepository_GetCurrencyRateUntil(t *testing.T) {
 		assert.NoError(t, err)
 		_, err = db.Exec(query, "2022-06-02", "Argentina", "peso", "10000", "2023-06-02")
 		assert.NoError(t, err)
+		_, err = db.Exec(query, "2022-06-02", "Bolivia", "peso", "10000", "2023-06-02")
+		assert.NoError(t, err)
 
 		// actual test
 		wantExchangeRate := &entities.ExchangeRate{
@@ -36,11 +38,10 @@ func TestExangeRateRepository_GetCurrencyRateUntil(t *testing.T) {
 
 		repository := ExangeRateRepository{DB: db}
 
-		gotExchangeRate, goErr := repository.GetCurrencyRateUntil("real", time.Date(2023, 6, 2, 0, 0, 0, 0, time.UTC))
+		gotExchangeRate, goErr := repository.GetCurrencyRateUntil("Brazil", "real", time.Date(2023, 6, 2, 0, 0, 0, 0, time.UTC))
 
 		assert.NoError(t, goErr)
-		// assert.Equal(t, wantExchangeRate, gotExchangeRate)
-		assert.Equal(t, wantExchangeRate.EffectiveDate, gotExchangeRate.EffectiveDate)
+		assert.Equal(t, wantExchangeRate, gotExchangeRate)
 	})
 }
 

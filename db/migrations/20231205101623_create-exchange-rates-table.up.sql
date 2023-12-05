@@ -4,5 +4,5 @@ CREATE TABLE exchange_rate (
     currency VARCHAR(50),
     exchange_rate DECIMAL(20,2) NOT NULL,
     effective_date DATE NOt NULL,
-    PRIMARY KEY(currency, record_date) 
+    PRIMARY KEY(country, currency, record_date) 
 );

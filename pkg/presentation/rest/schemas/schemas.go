@@ -29,6 +29,7 @@ type GetPurchaseOutput struct {
 
 type GetPurchaseInput struct {
 	ID       string `form:"id" binding:"required"`
+	Country  string `form:"country" binding:"required"`
 	Currency string `form:"currency" binding:"required"`
 }
 

@@ -14,9 +14,9 @@ type ExchangeRateRepository struct {
 	mock.Mock
 }
 
-// GetCurrencyRateUntil provides a mock function with given fields: currency, until
-func (_m *ExchangeRateRepository) GetCurrencyRateUntil(currency string, until time.Time) (*entities.ExchangeRate, error) {
-	ret := _m.Called(currency, until)
+// GetCurrencyRateUntil provides a mock function with given fields: country, currency, until
+func (_m *ExchangeRateRepository) GetCurrencyRateUntil(country string, currency string, until time.Time) (*entities.ExchangeRate, error) {
+	ret := _m.Called(country, currency, until)
 
 	if len(ret) == 0 {
 		panic("no return value specified for GetCurrencyRateUntil")
@@ -24,19 +24,19 @@ func (_m *ExchangeRateRepository) GetCurrencyRateUntil(currency string, until ti
 
 	var r0 *entities.ExchangeRate
 	var r1 error
-	if rf, ok := ret.Get(0).(func(string, time.Time) (*entities.ExchangeRate, error)); ok {
-		return rf(currency, until)
+	if rf, ok := ret.Get(0).(func(string, string, time.Time) (*entities.ExchangeRate, error)); ok {
+		return rf(country, currency, until)
 	}
-	if rf, ok := ret.Get(0).(func(string, time.Time) *entities.ExchangeRate); ok {
-		r0 = rf(currency, until)
+	if rf, ok := ret.Get(0).(func(string, string, time.Time) *entities.ExchangeRate); ok {
+		r0 = rf(country, currency, until)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*entities.ExchangeRate)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(string, time.Time) error); ok {
-		r1 = rf(currency, until)
+	if rf, ok := ret.Get(1).(func(string, string, time.Time) error); ok {
+		r1 = rf(country, currency, until)
 	} else {
 		r1 = ret.Error(1)
 	}

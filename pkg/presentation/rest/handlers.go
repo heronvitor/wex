@@ -13,7 +13,7 @@ import (
 
 type PurchaseService interface {
 	CreatePurchase(purchase entities.Purchase) (entities.Purchase, error)
-	GetPurchaseInCurrency(id string, currency string) (*entities.PurchaseInCurrency, error)
+	GetPurchaseInCurrency(id, country, currency string) (*entities.PurchaseInCurrency, error)
 }
 
 type PurchaseHandler struct {
@@ -70,7 +70,7 @@ func (h *PurchaseHandler) GetPurchase(c *gin.Context) {
 		return
 	}
 
-	purchase, err := h.PurchaseService.GetPurchaseInCurrency(input.ID, input.Currency)
+	purchase, err := h.PurchaseService.GetPurchaseInCurrency(input.ID, input.Country, input.Currency)
 	if err != nil {
 		if err == business.ErrCantConvertCurrency {
 			c.JSON(http.StatusInternalServerError, schemas.Error{Error: err.Error()})

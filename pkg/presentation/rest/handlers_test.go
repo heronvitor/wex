@@ -100,7 +100,7 @@ func TestPurchaseHandler_CreatePurchase(t *testing.T) {
 
 func TestPurchaseHandler_GetPurchase(t *testing.T) {
 	t.Run("should require params", func(t *testing.T) {
-		wantBody := `{"error":"Key: 'GetPurchaseInput.Currency' Error:Field validation for 'Currency' failed on the 'required' tag"}`
+		wantBody := `{"error":"Key: 'GetPurchaseInput.Country' Error:Field validation for 'Country' failed on the 'required' tag\nKey: 'GetPurchaseInput.Currency' Error:Field validation for 'Currency' failed on the 'required' tag"}`
 		wantStatus := 400
 
 		handler := PurchaseHandler{}
@@ -118,10 +118,14 @@ func TestPurchaseHandler_GetPurchase(t *testing.T) {
 		handler := PurchaseHandler{
 			PurchaseService: purchaseService,
 		}
-		req, err := http.NewRequest("GET", "?id=bc3ede90-ecae-424a-97d4-2ca9556fd5e7&currency=real", strings.NewReader(`{"description":"purchase desc","transaction_date":"2023-04-20"}`))
+		req, err := http.NewRequest(
+			"GET",
+			"?id=bc3ede90-ecae-424a-97d4-2ca9556fd5e7&country=brazil&currency=real",
+			strings.NewReader(`{"description":"purchase desc","transaction_date":"2023-04-20"}`),
+		)
 		assert.NoError(t, err)
 
-		purchaseService.On("GetPurchaseInCurrency", "bc3ede90-ecae-424a-97d4-2ca9556fd5e7", "real").
+		purchaseService.On("GetPurchaseInCurrency", "bc3ede90-ecae-424a-97d4-2ca9556fd5e7", "brazil", "real").
 			Return(
 				nil,
 				nil,
@@ -140,10 +144,14 @@ func TestPurchaseHandler_GetPurchase(t *testing.T) {
 		handler := PurchaseHandler{
 			PurchaseService: purchaseService,
 		}
-		req, err := http.NewRequest("GET", "?id=bc3ede90-ecae-424a-97d4-2ca9556fd5e7&currency=real", strings.NewReader(`{"description":"purchase desc","transaction_date":"2023-04-20"}`))
+		req, err := http.NewRequest(
+			"GET",
+			"?id=bc3ede90-ecae-424a-97d4-2ca9556fd5e7&country=brazil&currency=real",
+			strings.NewReader(`{"description":"purchase desc","transaction_date":"2023-04-20"}`),
+		)
 		assert.NoError(t, err)
 
-		purchaseService.On("GetPurchaseInCurrency", mock.Anything, mock.Anything).
+		purchaseService.On("GetPurchaseInCurrency", mock.Anything, mock.Anything, mock.Anything).
 			Return(
 				nil,
 				nil,
@@ -164,10 +172,14 @@ func TestPurchaseHandler_GetPurchase(t *testing.T) {
 		handler := PurchaseHandler{
 			PurchaseService: purchaseService,
 		}
-		req, err := http.NewRequest("GET", "?id=bc3ede90-ecae-424a-97d4-2ca9556fd5e7&currency=real", strings.NewReader(`{"description":"purchase desc","transaction_date":"2023-04-20"}`))
+		req, err := http.NewRequest(
+			"GET",
+			"?id=bc3ede90-ecae-424a-97d4-2ca9556fd5e7&country=brazil&currency=real",
+			strings.NewReader(`{"description":"purchase desc","transaction_date":"2023-04-20"}`),
+		)
 		assert.NoError(t, err)
 
-		purchaseService.On("GetPurchaseInCurrency", mock.Anything, mock.Anything).
+		purchaseService.On("GetPurchaseInCurrency", mock.Anything, mock.Anything, mock.Anything).
 			Return(
 				nil,
 				errors.New("service error"),
@@ -188,10 +200,14 @@ func TestPurchaseHandler_GetPurchase(t *testing.T) {
 		handler := PurchaseHandler{
 			PurchaseService: purchaseService,
 		}
-		req, err := http.NewRequest("GET", "?id=bc3ede90-ecae-424a-97d4-2ca9556fd5e7&currency=real", strings.NewReader(`{"description":"purchase desc","transaction_date":"2023-04-20"}`))
+		req, err := http.NewRequest(
+			"GET",
+			"?id=bc3ede90-ecae-424a-97d4-2ca9556fd5e7&country=brazil&currency=real",
+			strings.NewReader(`{"description":"purchase desc","transaction_date":"2023-04-20"}`),
+		)
 		assert.NoError(t, err)
 
-		purchaseService.On("GetPurchaseInCurrency", mock.Anything, mock.Anything).
+		purchaseService.On("GetPurchaseInCurrency", mock.Anything, mock.Anything, mock.Anything).
 			Return(
 				&entities.PurchaseInCurrency{
 					ID:              "da7cd6e6-1362-4761-af8a-b829b3ea7d60",

@@ -83,7 +83,7 @@ func TestPurchaseService_GetPurchaseInCurrency(t *testing.T) {
 				errors.New("random error"),
 			)
 
-		gotPurchase, gotErr := service.GetPurchaseInCurrency(id, "real")
+		gotPurchase, gotErr := service.GetPurchaseInCurrency(id, "brazil", "real")
 
 		assert.Equal(t, gotErr, errors.New("random error"))
 		assert.Nil(t, gotPurchase)
@@ -99,7 +99,7 @@ func TestPurchaseService_GetPurchaseInCurrency(t *testing.T) {
 		transactionRepository.On("GetPurchaseByID", id).
 			Return(nil, nil)
 
-		gotPurchase, gotErr := service.GetPurchaseInCurrency(id, "real")
+		gotPurchase, gotErr := service.GetPurchaseInCurrency(id, "brazil", "real")
 
 		assert.Equal(t, gotErr, ErrPurchaseNotFound)
 		assert.Nil(t, gotPurchase)
@@ -121,13 +121,13 @@ func TestPurchaseService_GetPurchaseInCurrency(t *testing.T) {
 				nil,
 			)
 
-		exchangeRateRepository.On("GetCurrencyRateUntil", mock.Anything, mock.Anything).
+		exchangeRateRepository.On("GetCurrencyRateUntil", mock.Anything, mock.Anything, mock.Anything).
 			Return(
 				&entities.ExchangeRate{},
 				errors.New("error"),
 			)
 
-		gotPurchase, gotErr := service.GetPurchaseInCurrency(id, "real")
+		gotPurchase, gotErr := service.GetPurchaseInCurrency(id, "brazil", "real")
 
 		assert.Equal(t, gotErr, errors.New("error"))
 		assert.Nil(t, gotPurchase)
@@ -148,13 +148,13 @@ func TestPurchaseService_GetPurchaseInCurrency(t *testing.T) {
 				nil,
 			)
 
-		exchangeRateRepository.On("GetCurrencyRateUntil", mock.Anything, mock.Anything).
+		exchangeRateRepository.On("GetCurrencyRateUntil", mock.Anything, mock.Anything, mock.Anything).
 			Return(
 				nil,
 				nil,
 			)
 
-		gotPurchase, gotErr := service.GetPurchaseInCurrency(id, "real")
+		gotPurchase, gotErr := service.GetPurchaseInCurrency(id, "brazil", "real")
 
 		assert.Equal(t, gotErr, errors.New("cannot be converted to the target currency"))
 		assert.Nil(t, gotPurchase)
@@ -189,7 +189,7 @@ func TestPurchaseService_GetPurchaseInCurrency(t *testing.T) {
 				nil,
 			)
 
-		exchangeRateRepository.On("GetCurrencyRateUntil", "real", time.Date(2020, 5, 4, 1, 0, 0, 0, time.UTC)).
+		exchangeRateRepository.On("GetCurrencyRateUntil", "brazil", "real", time.Date(2020, 5, 4, 1, 0, 0, 0, time.UTC)).
 			Return(
 				&entities.ExchangeRate{
 					Country:      "Brazil",
@@ -199,7 +199,7 @@ func TestPurchaseService_GetPurchaseInCurrency(t *testing.T) {
 				nil,
 			)
 
-		gotPurchase, gotErr := service.GetPurchaseInCurrency(id, "real")
+		gotPurchase, gotErr := service.GetPurchaseInCurrency(id, "brazil", "real")
 
 		assert.Equal(t, wantPurchase, gotPurchase)
 		assert.NoError(t, gotErr)
