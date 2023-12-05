@@ -7,7 +7,7 @@ COPY go.mod go.sum /
 RUN go mod download
 
 COPY . .
-RUN make build
+RUN go build -o ./bin/wex ./cmd/wex
 
 # runner
 

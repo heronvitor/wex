@@ -1,19 +1,21 @@
 version: '3.3'
 services:
-  # wex_app:
-  #   container_name: wex_app
-  #   build:
-  #     context: .
-  #     dockerfile: ./Dockerfile
-  #   restart: always
-  #   depends_on:
-  #     - wex_db
-  #   ports:
-  #     - "8080:8080"
-  #   networks:
-  #     - postgres-network
-  #   environment:
-  #     - DB_URL=postgresql://wex:pass@wex_db/wex_test?sslmode=disable
+  wex_app:
+    container_name: wex_app
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    entrypoint:
+      - /app/wex
+    restart: always
+    depends_on:
+      - wex_db
+    ports:
+      - "8080:8080"
+    networks:
+      - postgres-network
+    environment:
+      - DB_URL=postgresql://wex:pass@wex_db/wex_test?sslmode=disable
 
   wex_db:
     image: postgres
