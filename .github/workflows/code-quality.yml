@@ -19,6 +19,18 @@ jobs:
       with:
         go-version: 1.21
 
+    - name: Import env-file       
+      uses: cardinalby/export-env-action@v1
+      with:
+        envFile: '.env'    
+        expand: 'true'
+
+    - name: Setup db
+      run: docker-compose up --build -d
+    
+    - name: Create Tables
+      run: make migrate-up
+
     - name: Run test
       run: go test ./...
 
