@@ -1,10 +1,12 @@
 version: '3.3'
 services:
-  wex_app:
+  wex:
     container_name: wex_app
     build:
       context: .
       dockerfile: ./Dockerfile
+    command:
+     - api
     entrypoint:
       - /app/wex
     restart: always
@@ -16,6 +18,25 @@ services:
       - postgres-network
     environment:
       - DB_URL=postgresql://wex:pass@wex_db/wex_test?sslmode=disable
+
+  migrate:
+    image: migrate/migrate:v4.15.2
+    volumes:
+      - ./db/migrations:/migrations
+    entrypoint:
+      [
+        "migrate",
+        "-path",
+        "/migrations",
+        "-database",
+        "postgresql://wex:pass@wex_db/wex_test?sslmode=disable",
+      ]
+    command: ["up"]
+    networks:
+      - postgres-network
+    depends_on:
+      - wex_db
+    restart: on-failure
 
   wex_db:
     image: postgres

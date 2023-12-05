@@ -35,6 +35,14 @@ Flags:
       --port=8080        ($PORT)
 ```
 
+## Run with docker-compose
+```bash
+$ docker-compose up -d # run all: db, migration, app
+# then you can access http://localhost:8080/swagger/index.html
+```
+```bash
+$ docker-compose run wex update # run job to update exchange rates
+```
 ### Code Architecture
 It has been made using a tree layer architecture: data access layer, business and presentation layer. The architecture was chosen because is allow the separation of responsabilities, facilitates tests using dependecy injections and is not too complex.
 
