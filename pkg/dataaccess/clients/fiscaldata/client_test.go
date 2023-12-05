@@ -60,6 +60,11 @@ func TestClient_GetExchangeRates(t *testing.T) {
 					EffectiveDate: "2001-03-31",
 				},
 			},
+			Meta: struct {
+				TotalPages int "json:\"total-pages\""
+			}{
+				TotalPages: 171,
+			},
 		}
 
 		server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
