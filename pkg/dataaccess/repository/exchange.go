@@ -13,6 +13,12 @@ type ExangeRateRepository struct {
 }
 
 func (r ExangeRateRepository) SaveExchangeRates(exchangeRates []entities.ExchangeRate, updateInfo entities.ExchangeRateUpdateInfo) error {
+	tx, err := r.DB.Begin()
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+
 	query := `
 		INSERT INTO exchange_rate (record_date, country, currency, exchange_rate, effective_date)
 			VALUES ($1,$2,$3,$4,$5)
@@ -20,7 +26,7 @@ func (r ExangeRateRepository) SaveExchangeRates(exchangeRates []entities.Exchang
 			exchange_rate=EXCLUDED.exchange_rate,
 			effective_date=EXCLUDED.effective_date
 			`
-	stmt, err := r.DB.Prepare(query)
+	stmt, err := tx.Prepare(query)
 	if err != nil {
 		return err
 	}
@@ -48,8 +54,13 @@ func (r ExangeRateRepository) SaveExchangeRates(exchangeRates []entities.Exchang
 			retry_time=EXCLUDED.retry_time,
 			success=EXCLUDED.success
 	`
-	_, err = r.DB.Exec(query, updateInfo.Time, updateInfo.RetryCount, updateInfo.RetryTime, updateInfo.Success)
-	return err
+	_, err = tx.Exec(query, updateInfo.Time, updateInfo.RetryCount, updateInfo.RetryTime, updateInfo.Success)
+	if err != nil {
+		return err
+	}
+
+	tx.Commit()
+	return nil
 }
 
 func (r ExangeRateRepository) GetLastUpdateAttempt() (lastUpdateAttempt *entities.ExchangeRateUpdateInfo, err error) {
