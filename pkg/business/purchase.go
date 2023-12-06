@@ -2,6 +2,7 @@ package business
 
 import (
 	"errors"
+	"math"
 
 	"github.com/google/uuid"
 	"github.com/heronvitor/pkg/entities"
@@ -59,6 +60,11 @@ func (s PurchaseService) GetPurchaseInCurrency(id, country, currency string) (*e
 		Amount:          purchase.Amount,
 		TransactionDate: purchase.TransactionDate,
 		CurrencyRate:    exchangeRate.ExchangeRate,
-		ConvertedAmount: purchase.Amount * exchangeRate.ExchangeRate,
+		ConvertedAmount: roundFloat(purchase.Amount*exchangeRate.ExchangeRate, 2),
 	}, nil
+}
+
+func roundFloat(val float64, precision uint) float64 {
+	ratio := math.Pow(10, float64(precision))
+	return math.Round(val*ratio) / ratio
 }
