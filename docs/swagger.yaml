@@ -54,6 +54,11 @@ paths:
         name: id
         required: true
         type: string
+      - description: country
+        in: query
+        name: country
+        required: true
+        type: string
       - description: currency
         in: query
         name: currency

@@ -57,6 +57,7 @@ func (h *PurchaseHandler) CreatePurchase(c *gin.Context) {
 
 // @Produce      json
 // @Param        id  query  string  true  "id"
+// @Param        country  query  string  true  "country"
 // @Param        currency  query  string  true  "currency"
 // @Success      200  {object}  schemas.GetPurchaseOutput
 // @Failure      404  {object}  schemas.Error

@@ -30,6 +30,13 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
+                        "description": "country",
+                        "name": "country",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
                         "description": "currency",
                         "name": "currency",
                         "in": "query",
