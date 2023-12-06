@@ -12,6 +12,8 @@ type ExangeRateRepository struct {
 	DB *sql.DB
 }
 
+// The performance can be improved using pg copy and a temp table
+// https://stackoverflow.com/questions/46934351/python-postgresql-copy-command-used-to-insert-or-update-not-just-insert
 func (r ExangeRateRepository) SaveExchangeRates(exchangeRates []entities.ExchangeRate, updateInfo entities.ExchangeRateUpdateInfo) error {
 	tx, err := r.DB.Begin()
 	if err != nil {
